@@ -12,12 +12,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.Random;
 import java.awt.Toolkit;
-import javax.imageio.ImageIO;
+
 import javax.swing.JFrame;
 
 import java.awt.event.MouseMotionListener;
@@ -45,33 +42,12 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 	public JFrame jframe;
 
 	public int score;
-	@Override
-	public void mouseMoved(MouseEvent e) {
-
-	}
-
-	@Override
-	public void mouseDragged(MouseEvent e) {
-				// Atualiza a posição da barra quando o mouse é arrastado (movido enquanto um botão está pressionado)
-				int mouseX = e.getX();
-				player1.setX(mouseX - player1.getWidth()); // Centraliza a barra na posição do mouse
-				repaint(); // Redesenha o JFrame para refletir a nova posição da barra
-	}
-
-	private BufferedImage loadImage(String path) {
-        try {
-            return ImageIO.read(new File(path));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-	}
-
+	
 	public Pong()
 	{
-		Timer timer = new Timer(20, this);
+		Timer timer = new Timer(10, this);
 		random = new Random();
-
+		
 		jframe = new JFrame("Pong");
 
 		renderer = new Renderer();
@@ -87,18 +63,45 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 		jframe.addMouseListener(this);
 		jframe.addMouseMotionListener(this);
 		jframe.addKeyListener(this);
-
+		
 		timer.start();
-
+		
 		jframe.addComponentListener(new ComponentAdapter() {
-            @Override
+			@Override
             public void componentResized(ComponentEvent e) {
-                // Atualiza o tamanho preferencial do Renderer para corresponder ao tamanho do JFrame
+				// Atualiza o tamanho preferencial do Renderer para corresponder ao tamanho do JFrame
                 renderer.setPreferredSize(new Dimension(jframe.getWidth(), jframe.getHeight()));
                 renderer.revalidate(); // Força a atualização do layout
             }
         });
 	}
+	
+	@Override
+	public void mouseMoved(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		if (gameStatus == 2) {
+
+			// Obtém as coordenadas X e Y do mouse
+			int mouseX = e.getX();
+			
+			// Verifica se o mouse está dentro dos limites horizontais do paddle
+	if (mouseX >= player1.getX() && mouseX <= player1.getX() + player1.getWidth()) {
+		// Verifica se o mouse está dentro dos limites verticais do paddle
+		// if (mouseY >= player1.getY() && mouseY <= player1.getY() + player1.getHeight()) {
+			// Atualiza a posição do paddle apenas se o mouse estiver sobre ele
+			player1.setX(mouseX - player1.getWidth() / 2);
+			
+		 // Redesenha o JFrame para refletir a nova posição do paddle
+		 repaint();
+		} 
+		}
+	}
+	   
+//    }
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -112,7 +115,7 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 
 		
 	}
-
+	
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// Invoked when a mouse button has been released on a component
@@ -159,6 +162,7 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 		}
 		
 		ball.update(player1);
+
 	}
 	
 	public void render(Graphics2D g)
@@ -169,24 +173,18 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 
 		if (gameStatus == 0)
 		{
-			// g.setColor(Color.WHITE);
-			// g.setFont(new Font("Arial", 1, 50));
+			g.setColor(Color.WHITE);
+			g.setFont(new Font("Arial", 1, 50));
 
-			// g.drawString("PONG", width / 2 - 75, 50);
+			g.drawString("PONG", width / 2 - 75, 50);
 
 
-			// g.setFont(new Font("Arial", 1, 30));
+			g.setFont(new Font("Arial", 1, 30));
 
-			// g.drawString("Press Space to Play", width / 2 - 150, height / 2 - 25);
-			// // g.drawString("Press Shift to Play with Bot", width / 2 - 200, height / 2 + 25);
-			// g.drawString("<< Vidas: 5 >>", width / 2 - 150, height / 2 + 75);,
-			BufferedImage imageHome = loadImage("C:\\Users\\lucas\\OneDrive\\Documentos\\Vs projects\\A3\\imagens\\home.png");
+			g.drawString("Press Space to Play", width / 2 - 150, height / 2 - 25);
+			// g.drawString("Press Shift to Play with Bot", width / 2 - 200, height / 2 + 25);
+			g.drawString("<< Vidas: 5 >>", width / 2 - 150, height / 2 + 75);
 
-            // Desenhar a imagem na posição (x, y)
-
-				int imgWidth = width -10; // Ajuste conforme necessário
-				int imgHeight = height - 10; // Ajuste conforme necessário
-                g.drawImage(imageHome,5, 5, imgWidth, imgHeight, null); // Ajuste as coordenadas (x, y) conforme necessário₢
 			
 		}
 
@@ -240,25 +238,18 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 		}
 		if (gameStatus == 4)
 		{
-			// g.setColor(Color.WHITE);
-			// g.setFont(new Font("Arial", 1, 50));
+			g.setColor(Color.WHITE);
+			g.setFont(new Font("Arial", 1, 50));
 
-			// g.drawString("Bem vindo ao pong", width / 2 - 250, 50);
+			g.drawString("Bem vindo ao pong", width / 2 - 250, 50);
 
-			// g.setFont(new Font("Arial", 1, 30));
+			g.setFont(new Font("Arial", 1, 30));
 
-			// g.drawString("Regras:", width / 2 - 75, 250);
-			// g.drawString("- Faça 200 pontos para passar para a próxima fase", width / 2 - 550, 325);
-			// g.drawString("- Na segunda fase, você terá um obstaculo no centro da tela", width / 2 - 550, 375);
-			// g.drawString("- Controle a barra e evite deixar a bola passar, caso passe, você perderá 1 vida", width / 2 - 550, 425);
-			// g.drawString("- Se você ficar com 0 vidas, você perde", width / 2 - 550, 475);
-			
-			BufferedImage imageRules = loadImage("C:\\Users\\lucas\\OneDrive\\Documentos\\Vs projects\\A3\\imagens\\regras.png");
-            // Desenhar a imagem na posição (x, y)
-            
-			int imgWidth = width -10; // Ajuste conforme necessário
-			int imgHeight = height - 10; // Ajuste conforme necessário
-			g.drawImage(imageRules,5, 5, imgWidth, imgHeight, null); // Ajuste as coordenadas (x, y) conforme necessário₢
+			g.drawString("Regras:", width / 2 - 75, 250);
+			g.drawString("- Faça 200 pontos para passar para a próxima fase", width / 2 - 550, 325);
+			g.drawString("- Na segunda fase, você terá um obstaculo no centro da tela", width / 2 - 550, 375);
+			g.drawString("- Controle a barra e evite deixar a bola passar, caso passe, você perderá 1 vida", width / 2 - 550, 425);
+			g.drawString("- Se você ficar com 0 vidas, você perde", width / 2 - 550, 475);
 			
 			}
 			
@@ -317,6 +308,7 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 		else if (id == KeyEvent.VK_ESCAPE && (gameStatus == 2 || gameStatus == 3))
 		{
 			gameStatus = 0;
+			score = 0;
 		}
 
 		else if (id == KeyEvent.VK_SPACE)
@@ -336,6 +328,7 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 			else if (gameStatus == 4)
 			{
 				gameStatus = 0;
+				score = 0;
 				start();
 			}
 		}

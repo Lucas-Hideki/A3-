@@ -72,7 +72,6 @@ public class Ball
 	public void spawn()
 	{
 		this.amountOfHits = 0;
-		this.pong.score = 0;
 		this.x = pong.width / 2 - this.width / 2;
 		this.y = pong.height / 2 - this.height / 2;
 
@@ -93,18 +92,16 @@ public class Ball
 		}
 	}
 	
-	public int checkCollision(Paddle paddle)
-	{
-		if (this.x <= paddle.x + paddle.width && this.x + width >= paddle.x && this.y <= paddle.y + paddle.height && this.y + height >= paddle.y)
-		{
-			return 1; //bounce
-		}
-		else if ((paddle.y < y && paddle.paddleNumber == 1) || (paddle.y > y - width && paddle.paddleNumber == 2))
-		{
-			return 2; //score
-		}
+	public int checkCollision(Paddle paddle) {
 		
-		return 0; //nothing
+	    if (this.x + this.width >= paddle.x && this.x <= paddle.x + paddle.width && 
+        this.y + this.height >= paddle.y && this.y <= paddle.y + paddle.height) {
+        return 1; //bounce
+    } else if ((paddle.y < y && paddle.paddleNumber == 1) || (paddle.y > y - width && paddle.paddleNumber == 2)) {
+        return 2; //score
+    }
+    return 0; //nothing
+		
 	}
 	
 	public void render(Graphics g)

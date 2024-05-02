@@ -1,5 +1,3 @@
-package A3;
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -25,7 +23,7 @@ import javax.swing.JFrame;
 import java.awt.event.MouseMotionListener;
 import javax.swing.Timer;
 
-public class Pong implements ActionListener, KeyListener, MouseListener, MouseMotionListener 
+public class Pong extends JFrame implements ActionListener, KeyListener, MouseListener, MouseMotionListener 
 {
 	
 	public static Pong pong;
@@ -49,14 +47,15 @@ public class Pong implements ActionListener, KeyListener, MouseListener, MouseMo
 	public int score;
 	@Override
 	public void mouseMoved(MouseEvent e) {
+
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		// Atualiza a posição da barra quando o mouse é arrastado (movido enquanto um botão está pressionado)
-		int mouseX = e.getX();
-		player1.setX(mouseX - player1.getWidth() / 2); // Centraliza a barra na posição do mouse
-		repaint(); // Redesenha o JFrame para refletir a nova posição da barra
+				// Atualiza a posição da barra quando o mouse é arrastado (movido enquanto um botão está pressionado)
+				int mouseX = e.getX();
+				player1.setX(mouseX - player1.getWidth()); // Centraliza a barra na posição do mouse
+				repaint(); // Redesenha o JFrame para refletir a nova posição da barra
 	}
 
 	private BufferedImage loadImage(String path) {
@@ -74,7 +73,6 @@ public class Pong implements ActionListener, KeyListener, MouseListener, MouseMo
 		random = new Random();
 
 		jframe = new JFrame("Pong");
-		
 
 		renderer = new Renderer();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -214,7 +212,9 @@ public class Pong implements ActionListener, KeyListener, MouseListener, MouseMo
 			g.setFont(new Font("Arial", 1, 50));
 
 			g.drawString(String.valueOf(player1.lifes), width / 2 - 150, 50);
+			
 			g.drawString(String.valueOf(score), width / 2 + 150, 50);
+			g.drawString("Aperte espaço para pausar", width / 2 + 350, 50);
 
 			player1.render(g);
 			ball.render(g);

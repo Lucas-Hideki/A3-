@@ -1,5 +1,3 @@
-package A3;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
@@ -33,11 +31,10 @@ public class Ball
             this.motionY *= -1;
             // Reposiciona a bola logo acima da barra
             this.y = paddle1.y - this.height;
-			pong.score += 20;
         }
-
+		
         int speed = 5;
-
+		
         this.x += motionX * speed;
         this.y += motionY * speed;
 
@@ -62,6 +59,7 @@ public class Ball
 			}
 			
 			amountOfHits++;
+			pong.score += 20;
 		}
 		
 		if (checkCollision(paddle1) == 2)
@@ -74,6 +72,7 @@ public class Ball
 	public void spawn()
 	{
 		this.amountOfHits = 0;
+		this.pong.score = 0;
 		this.x = pong.width / 2 - this.width / 2;
 		this.y = pong.height / 2 - this.height / 2;
 

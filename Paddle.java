@@ -1,8 +1,8 @@
-package A3;
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.RoundRectangle2D;
+
+// asdasdasdasdasdasdasdasdasdasd
 
 public class Paddle
 {
@@ -45,23 +45,23 @@ public class Paddle
 	public void move(boolean left)
 	{
 		int speed = 15;
-
-		if (left) {
-            if (x - speed > 0) {
-                x -= speed;
-            } else {
-                x = 0;
-            }
-        } else {
-			if (x + width + speed < Pong.pong.width)
-			{
-				x += speed;
-			}
-			else
-			{
-				x = Pong.pong.width - width;
+			if (left) {
+				if (x - speed > 0) {
+					x -= speed;
+				} else {
+					x = 0;
+					
+				}
+			} else {
+				if (x + width + speed < Pong.pong.width)
+				{
+					x += speed;
+				}
+				else
+				{
+					x = Pong.pong.width - width;
+				}
 			}
 		}
 	}
 
-}

@@ -83,7 +83,7 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		if (gameStatus == 2) {
+		if (gameStatus == 2 ||gameStatus == 7) {
 
 			// Obtém as coordenadas X e Y do mouse
 			int mouseX = e.getX();
@@ -143,6 +143,12 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 		player1 = new Paddle(this, 1);
 		ball = new Ball(this);
 	}
+	public void start_2()
+	{
+		gameStatus = 7;
+		player1 = new Paddle(this, 1);
+		ball = new Ball(this);
+	}
 
 	public void update() {
 
@@ -162,6 +168,12 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 		}
 		
 		ball.update(player1);
+
+		// Verifica se a pontuação atingiu 200 pontos para avançar para a segunda fase
+		if (score >= 20 && gameStatus == 1 || score >= 20 && gameStatus == 2) {
+			// Define o status do jogo como 5 para iniciar a segunda fase
+			gameStatus = 5;
+		}
 
 	}
 	
@@ -253,6 +265,47 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 			
 			}
 			
+		if (gameStatus == 5)
+		{
+			g.setColor(Color.WHITE);
+			g.setFont(new Font("Arial", 1, 50));
+
+			g.drawString("Segunda Fase", width / 2 - 250, 50);
+
+			g.setFont(new Font("Arial", 1, 30));
+
+			g.drawString("Aperte espaço para começar", width / 2 - 75, 250);
+			
+			}
+			if (gameStatus == 6)
+			{
+				g.setColor(Color.WHITE);
+				g.setFont(new Font("Arial", 1, 50));
+				g.drawString("PAUSED", width / 2 - 103, height / 2);
+			}
+			if (gameStatus == 6 || gameStatus == 7)
+			{
+				g.setColor(Color.WHITE);
+	
+				// g.setStroke(new BasicStroke(5f));
+	
+				// g.drawLine(width, height / 2, 	0, height / 2);
+	
+				// g.setStroke(new BasicStroke(2f));
+	
+				// g.drawOval(width / 2 - 150, height / 2 - 150, 300, 300);
+	
+				g.setFont(new Font("Arial", 1, 50));
+	
+				g.drawString(String.valueOf(player1.lifes), width / 2 - 150, 50);
+				
+				g.drawString(String.valueOf(score), width / 2 + 150, 50);
+				g.drawString("Aperte espaço para pausar", width / 2 + 350, 50);
+	
+				player1.render(g);
+				ball.render(g);
+			}
+			
 		} 
 		
 	
@@ -260,7 +313,7 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		if (gameStatus == 2)
+		if (gameStatus == 2 || gameStatus == 7)
 		{
 			update();
 		}
@@ -305,7 +358,7 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 				scoreLimit--;
 			}
 		}
-		else if (id == KeyEvent.VK_ESCAPE && (gameStatus == 2 || gameStatus == 3))
+		else if (id == KeyEvent.VK_ESCAPE && (gameStatus == 2 || gameStatus == 3 || gameStatus == 7))
 		{
 			gameStatus = 0;
 			score = 0;
@@ -331,8 +384,23 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 				score = 0;
 				start();
 			}
+        	else if (gameStatus == 5) 
+			{
+				gameStatus = 0;
+				score = 0;
+				start_2();
+			}
+			else if (gameStatus == 6) 
+			 {
+			 gameStatus = 7;
+		 	}
+       		else if (gameStatus == 7) 
+			{
+            	gameStatus = 6;
+			}
 		}
-	}
+			
+		}
 
 	@Override
 	public void keyReleased(KeyEvent e)

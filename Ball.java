@@ -51,13 +51,17 @@ public class Ball
 		if (checkCollision(paddle1) == 1)
 		{
 			this.motionX = 1 + (amountOfHits / 5);
-			this.motionY = -2 + random.nextInt(4);
+			this.motionY = -2 + random.nextInt(2);
 			
 			if (motionY == 0)
 			{
-				motionY = 1;
+				motionY--;
 			}
 			
+			if (motionX == 0)
+			{
+				motionX--;
+			}
 			amountOfHits++;
 			pong.score += 20;
 		}

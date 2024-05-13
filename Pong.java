@@ -196,6 +196,13 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 
+		// if (showObstacle) {
+		// 	Vector3 lightDirection = new Vector3(10, 10, 10); // Aumenta a intensidade da luz
+		// 	Vector3 viewDirection = new Vector3(0, 0, -1); // Exemplo de direção de visualização
+		// 	Vector3 observerPosition = new Vector3(30, 30, 0);
+		// 	obstacle.render(g, lightDirection, viewDirection, observerPosition);
+		// }
+
 		if (showObstacle) {
 			obstacle.render(g);
 		}

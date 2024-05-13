@@ -24,7 +24,7 @@ public class Ball
 		spawn();
 	}
 
-	public void update(Paddle paddle1)
+	public void update(Paddle paddle1, Obstacle obstacle)
 	{
 		if (this.y + this.height >= paddle1.y && this.y + this.height <= paddle1.y + motionY && this.x >= paddle1.x && this.x <= paddle1.x + paddle1.width) {
             // Bola quica
@@ -32,6 +32,20 @@ public class Ball
             // Reposiciona a bola logo acima da barra
             this.y = paddle1.y - this.height;
         }
+
+		if (obstacle.collidesWith(this)) {
+			// Ajusta a posição da bola para fora do obstáculo
+			double dx = x + width / 2 - (obstacle.getX() + obstacle.getWidth() / 2);
+			double dy = y + height / 2 - (obstacle.getY() + obstacle.getHeight() / 2);
+			double angle = Math.atan2(dy, dx);
+			double distance = Math.sqrt(dx * dx + dy * dy);
+			double minDistance = obstacle.getRadius() + getRadius();
+			x = (int) ((obstacle.getX() + obstacle.getWidth() / 2) + Math.cos(angle) * minDistance - width / 2);
+			y = (int) ((obstacle.getY() + obstacle.getHeight() / 2) + Math.sin(angle) * minDistance - height / 2);
+			
+			// Inverte a direção vertical da bola
+			motionY *= -1;
+		}
 		
         int speed = 5;
 		
@@ -96,6 +110,18 @@ public class Ball
 		}
 	}
 	
+	public int getX () {
+		return x;
+	}
+
+	public int getY () {
+		return y;
+	}
+
+	public double getRadius() {
+		return width/ 2.0;
+	}
+
 	public int checkCollision(Paddle paddle) {
 		
 	    if (this.x + this.width >= paddle.x && this.x <= paddle.x + paddle.width && 

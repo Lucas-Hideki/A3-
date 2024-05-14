@@ -177,7 +177,7 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 
 
 		// Verifica se a pontuação atingiu 200 pontos para avançar para a segunda fase
-		if (score >= 20 && gameStatus == 1 || score >= 20 && gameStatus == 2) {
+		if (score >= 200 && gameStatus == 1 || score >= 200 && gameStatus == 2) {
 			// Define o status do jogo como 5 para iniciar a segunda fase
 			gameStatus = 5;
 			showObstacle = true;

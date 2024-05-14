@@ -33,18 +33,20 @@ public class Ball
             this.y = paddle1.y - this.height;
         }
 
-		if (obstacle.collidesWith(this)) {
-			// Ajusta a posição da bola para fora do obstáculo
-			double dx = x + width / 2 - (obstacle.getX() + obstacle.getWidth() / 2);
-			double dy = y + height / 2 - (obstacle.getY() + obstacle.getHeight() / 2);
-			double angle = Math.atan2(dy, dx);
-			double distance = Math.sqrt(dx * dx + dy * dy);
-			double minDistance = obstacle.getRadius() + getRadius();
-			x = (int) ((obstacle.getX() + obstacle.getWidth() / 2) + Math.cos(angle) * minDistance - width / 2);
-			y = (int) ((obstacle.getY() + obstacle.getHeight() / 2) + Math.sin(angle) * minDistance - height / 2);
-			
-			// Inverte a direção vertical da bola
-			motionY *= -1;
+		if (pong.gameStatus == 7) {
+			if (obstacle.collidesWith(this)) {
+				// Ajusta a posição da bola para fora do obstáculo
+				double dx = x + width / 2 - (obstacle.getX() + obstacle.getWidth() / 2);
+				double dy = y + height / 2 - (obstacle.getY() + obstacle.getHeight() / 2);
+				double angle = Math.atan2(dy, dx);
+				double distance = Math.sqrt(dx * dx + dy * dy);
+				double minDistance = obstacle.getRadius() + getRadius();
+				x = (int) ((obstacle.getX() + obstacle.getWidth() / 2) + Math.cos(angle) * minDistance - width / 2);
+				y = (int) ((obstacle.getY() + obstacle.getHeight() / 2) + Math.sin(angle) * minDistance - height / 2);
+				
+				// Inverte a direção vertical da bola
+				motionY *= -1;
+			}
 		}
 		
         int speed = 5;

@@ -257,6 +257,7 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 			if (playerLifes != 2)
 			{
 				g.drawString("GAME OVER", width / 2 - 165, 200);
+				showObstacle = false;
 			}
 
 			g.setFont(new Font("Arial", 1, 30));
@@ -377,6 +378,7 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 		{
 			gameStatus = 0;
 			score = 0;
+			showObstacle = false;
 		}
 
 		else if (id == KeyEvent.VK_SPACE)

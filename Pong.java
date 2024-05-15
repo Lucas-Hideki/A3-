@@ -188,6 +188,7 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 		}
 
 	}
+	//final
 	
 	public void render(Graphics2D g)
 	{

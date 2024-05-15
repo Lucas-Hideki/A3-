@@ -1,6 +1,9 @@
+
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class Obstacle {
+
     private int x, y, width, height;
 
     public Obstacle(int x, int y, int width, int height) {
@@ -30,51 +33,6 @@ public class Obstacle {
         return width / 2.0;
     }
 
-    // public void render(Graphics2D g, Vector3 lightDirection, Vector3 viewDirection, Vector3 observerPosition) {
-    //     // Definindo a cor base
-    //     Color baseColor = Color.RED;
-
-    //     if (observerPosition == null) {
-    //         observerPosition = new Vector3(x + width / 2.0, y + height / 2.0, 0); // Center of the obstacle
-    //       }
-    
-    //     // Coordenadas do centro do objeto
-    //     int centerX = x + width / 2;
-    //     int centerY = y + height / 2;
-    
-    //     // Calculando o vetor normal da superfície
-    //     Vector3 surfaceNormal = new Vector3(0, 0, 1);
-    
-    //     // Calculando o vetor direção da luz incidente
-    //     Vector3 surfaceToLight = new Vector3(centerX - lightDirection.getX(), centerY - lightDirection.getY(), 0)
-    //             .normalize();
-    
-    //     // Calculando o ângulo entre o vetor normal e o vetor direção da luz
-    //     double diffuseAngle = surfaceNormal.dot(surfaceToLight);
-    
-    //     // Ajustando a intensidade da cor com base na iluminação difusa
-    //     int diffuseIntensity = (int) (Math.max(0, diffuseAngle) * 255);
-    
-    //     // Calculando o vetor direção da luz refletida
-    //     Vector3 reflectedLightDirection = surfaceToLight.reflect(surfaceNormal);
-    
-    //     // Calculando o ângulo entre o vetor normal, o vetor direção da luz refletida e o vetor direção do observador
-    //     double specularAngle = surfaceNormal.dot(reflectedLightDirection);
-    
-    //     // Ajustando a intensidade da cor com base na iluminação especular
-    //     int specularIntensity = (int) (Math.max(0, specularAngle) * 255);
-    
-    //     // Ajustando a cor do objeto com base na iluminação difusa e especular
-    //     Color adjustedColor = new Color(
-    //             Math.min(255, baseColor.getRed() + diffuseIntensity + specularIntensity),
-    //             Math.min(255, baseColor.getGreen() + diffuseIntensity + specularIntensity),
-    //             Math.min(255, baseColor.getBlue() + diffuseIntensity + specularIntensity));
-    
-    //     // Desenhar o objeto com a cor ajustada
-    //     g.setColor(adjustedColor);
-    //     g.fillOval(x, y, width, height);
-    // }
-
     public void render(Graphics2D g) {
         // Definindo a cor base
         Color baseColor = Color.RED;
@@ -88,7 +46,41 @@ public class Obstacle {
         // Você pode ajustar a cor e a intensidade conforme desejado
         int lightSizeIncrease = 50; // Aumento no tamanho da luz
         g.setColor(new Color(255, 255, 0, 70)); // Amarelo com transparência
-        g.fillOval(x + width/4 - lightSizeIncrease, y + height/4 - lightSizeIncrease, width/2 + 2 * lightSizeIncrease, height/2 + 2 * lightSizeIncrease);
+        g.fillOval(x + width / 4 - lightSizeIncrease, y + height / 4 - lightSizeIncrease, width / 2 + 2 * lightSizeIncrease, height / 2 + 2 * lightSizeIncrease);
+        
+        testando(g);
+    }
+
+    public void testando(Graphics2D g) {
+        // Definindo cores
+        Color baseColor = Color.RED; // Cor base do obstáculo
+        Color darkBaseColor = new Color(baseColor.getRed() / 2, baseColor.getGreen() / 2, baseColor.getBlue() / 2); // Cor base mais escura
+        Color lightColor = Color.WHITE; // Cor da luz
+
+        // Criando gradiente radial
+        int width = getWidth();
+        int height = getHeight();
+        int radius = Math.min(width, height) / 2; // Raio do gradiente maior que o obstáculo
+
+        // Define um array de posições (0.0f to 1.0f) para cada cor
+        float[] fractions = {0.0f, 1.0f}; // Primeira cor em 0.0f, segunda cor em 1.0f
+
+        // Define um array de cores para o gradiente
+        Color[] colors = {lightColor, darkBaseColor}; // Branco no centro, vermelho escuro na borda
+
+        // Cria o objeto RadialGradientPaint
+        RadialGradientPaint gradient = new RadialGradientPaint(width / 2f, height / 2f, radius, fractions, colors);
+
+        // Criando imagem temporária e desenhando esfera
+        BufferedImage tempImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D tempG = tempImage.createGraphics();
+
+        // Desenhando gradiente radial na imagem temporária
+        tempG.setPaint(gradient);
+        tempG.fillOval(0, 0, width, height);
+
+        // Desenhando imagem temporária com gradiente sobre o obstáculo
+        g.drawImage(tempImage, 960, 512, null);
     }
 
     public boolean collidesWith(Ball ball) {

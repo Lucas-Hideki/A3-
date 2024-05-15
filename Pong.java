@@ -325,7 +325,6 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 		} 
 		
 	
-     
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{

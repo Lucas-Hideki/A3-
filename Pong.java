@@ -42,6 +42,10 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 	public JFrame jframe;
 
 	public int score;
+
+	public boolean showObstacle = false;
+
+	public Obstacle obstacle;
 	
 	public Pong()
 	{
@@ -54,7 +58,7 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         width = screenSize.width;
         height = screenSize.height - 55; //para não atravessar a taskbar do windows
-		
+		obstacle = new Obstacle(width / 2, height / 2, 400, 400);
 		jframe.setSize(width, height);
 		jframe.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		jframe.setVisible(true);
@@ -63,6 +67,8 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 		jframe.addMouseListener(this);
 		jframe.addMouseMotionListener(this);
 		jframe.addKeyListener(this);
+
+		
 		
 		timer.start();
 		
@@ -148,6 +154,7 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 		gameStatus = 7;
 		player1 = new Paddle(this, 1);
 		ball = new Ball(this);
+
 	}
 
 	public void update() {
@@ -167,13 +174,20 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 			player1.move(false);
 		}
 		
-		ball.update(player1);
+		ball.update(player1, obstacle);
+
 
 		// Verifica se a pontuação atingiu 200 pontos para avançar para a segunda fase
 		if (score >= 20 && gameStatus == 1 || score >= 20 && gameStatus == 2) {
 			// Define o status do jogo como 5 para iniciar a segunda fase
 			gameStatus = 5;
+			showObstacle = true;
 		}
+
+
+		// if (score >= 20 || gameStatus == 7) {
+		// 	showObstacle = false;
+		// } 
 
 	}
 	
@@ -182,6 +196,10 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 		g.setColor(Color.black);
 		g.fillRect(0, 0, width, height);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+		if (showObstacle) {
+			obstacle.render(g);
+		}
 
 		if (gameStatus == 0)
 		{
@@ -241,6 +259,7 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 			if (playerLifes != 2)
 			{
 				g.drawString("GAME OVER", width / 2 - 165, 200);
+				showObstacle = false;
 			}
 
 			g.setFont(new Font("Arial", 1, 30));
@@ -309,7 +328,6 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 		} 
 		
 	
-     
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
@@ -361,6 +379,7 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 		else if (id == KeyEvent.VK_ESCAPE && (gameStatus == 2 || gameStatus == 3 || gameStatus == 7))
 		{
 			gameStatus = 0;
+			showObstacle = false;
 			score = 0;
 		}
 

@@ -37,7 +37,7 @@ public class Paddle
 
 	public void render(Graphics2D g)
 	{
-		g.setColor(Color.white);
+		g.setColor(Color.gray);
 		RoundRectangle2D.Double paddleShape = new RoundRectangle2D.Double(x, y, width, height, 20, 20);
         g.fill(paddleShape);
 	}

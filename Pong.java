@@ -14,9 +14,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import java.util.Random;
 import java.awt.Toolkit;
-
 import javax.swing.JFrame;
-
 import java.awt.event.MouseMotionListener;
 import javax.swing.Timer;
 
@@ -26,6 +24,8 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 	public static Pong pong;
 
 	public int width, height;
+
+	public boolean sObs = false;
 
 	public Renderer renderer;
 
@@ -181,6 +181,10 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 		if (score >= 20 && gameStatus == 1 || score >= 20 && gameStatus == 2) {
 			// Define o status do jogo como 5 para iniciar a segunda fase
 			gameStatus = 5;
+			
+			sObs = true;
+		}
+		if (sObs == true && gameStatus == 6 ||sObs == true && gameStatus == 7) {
 			showObstacle = true;
 		}
 
@@ -204,16 +208,16 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 		if (gameStatus == 0)
 		{
 			g.setColor(Color.WHITE);
-			g.setFont(new Font("Arial", 1, 50));
+			g.setFont(new Font("Arial", 1, 75));
 
-			g.drawString("PONG", width / 2 - 75, 50);
+			g.drawString("PONG", width / 2 - 125, 150);
 
 
 			g.setFont(new Font("Arial", 1, 30));
 
 			g.drawString("Press Space to Play", width / 2 - 150, height / 2 - 25);
 			// g.drawString("Press Shift to Play with Bot", width / 2 - 200, height / 2 + 25);
-			g.drawString("<< Vidas: 5 >>", width / 2 - 150, height / 2 + 75);
+			g.drawString("<< Vidas: 5 >>", width / 2 - 125, height / 2 + 75);
 
 			
 		}
@@ -238,11 +242,15 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 			g.drawOval(width / 2 - 150, height / 2 - 150, 300, 300);
 
 			g.setFont(new Font("Arial", 1, 50));
-
-			g.drawString(String.valueOf(player1.lifes), width / 2 - 150, 50);
 			
-			g.drawString(String.valueOf(score), width / 2 + 150, 50);
-			g.drawString("Aperte espaço para pausar", width / 2 + 350, 50);
+			g.drawString(String.valueOf(player1.lifes), width / 2 - 765, 50);
+			g.drawString("vidas:", width / 2 - 935, 50);
+
+			g.drawString(String.valueOf(score), width / 2 - 380, 49);
+			g.drawString("pontuação:", width / 2 - 675, 49);
+
+			g.setFont(new Font("Arial", 1, 35));
+			g.drawString("Aperte espaço para pausar", width / 2 + 450, 50);
 
 			player1.render(g);
 			ball.render(g);
@@ -289,11 +297,11 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("Arial", 1, 50));
 
-			g.drawString("Segunda Fase", width / 2 - 250, 50);
+			g.drawString("Segunda Fase", width / 2 - 200, 125);
 
 			g.setFont(new Font("Arial", 1, 30));
 
-			g.drawString("Aperte espaço para começar", width / 2 - 75, 250);
+			g.drawString("Aperte espaço para começar", width / 2 - 225, 250);
 			
 			}
 			if (gameStatus == 6)
@@ -306,20 +314,19 @@ public class Pong extends JFrame implements ActionListener, KeyListener, MouseLi
 			{
 				g.setColor(Color.WHITE);
 	
-				// g.setStroke(new BasicStroke(5f));
-	
-				// g.drawLine(width, height / 2, 	0, height / 2);
-	
-				// g.setStroke(new BasicStroke(2f));
-	
-				// g.drawOval(width / 2 - 150, height / 2 - 150, 300, 300);
-	
 				g.setFont(new Font("Arial", 1, 50));
 	
-				g.drawString(String.valueOf(player1.lifes), width / 2 - 150, 50);
+				// g.drawString(String.valueOf(player1.lifes), width / 2 - 150, 50);
 				
-				g.drawString(String.valueOf(score), width / 2 + 150, 50);
-				g.drawString("Aperte espaço para pausar", width / 2 + 350, 50);
+				// g.drawString(String.valueOf(score), width / 2 + 150, 50);
+				g.drawString(String.valueOf(player1.lifes), width / 2 - 765, 50);
+				g.drawString("vidas:", width / 2 - 935, 50);
+	
+				g.drawString(String.valueOf(score), width / 2 - 380, 49);
+				g.drawString("pontuação:", width / 2 - 675, 49);
+	
+				g.setFont(new Font("Arial", 1, 35));
+				g.drawString("Aperte espaço para pausar", width / 2 + 450, 50);
 	
 				player1.render(g);
 				ball.render(g);
